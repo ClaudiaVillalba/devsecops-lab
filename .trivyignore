@@ -1,0 +1,6 @@
+# CVEs en perl-base sin parche disponible (Fixed Version vacio).
+# La aplicacion Flask no depende de Perl; riesgo no aplicable en este contexto.
+CVE-2026-13221
+CVE-2026-42496
+CVE-2026-57433
+CVE-2026-8376
