@@ -2,14 +2,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-#checkov:skip=CKV2_AWS_64:Politica de KMS no requerida en lab educativo
 resource "aws_kms_key" "clave_bucket" {
   description         = "Llave KMS para cifrado del bucket del lab"
   enable_key_rotation = true
 }
 
-#checkov:skip=CKV_AWS_18:Logging de bucket no requerido en lab educativo
-#checkov:skip=CKV_AWS_144:Replicacion cross-region no requerida en lab educativo
 resource "aws_s3_bucket" "bucket_seguro" {
   bucket = "mi-bucket-devsecops-demo-12345"
 }
@@ -44,13 +41,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "ciclo_vida" {
   rule {
     id     = "expiracion-lab"
     status = "Enabled"
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
     expiration {
       days = 365
     }
   }
 }
 
-#checkov:skip=CKV2_AWS_5:Security group de referencia para el lab, no asociado a instancia real
 resource "aws_security_group" "sg_seguro" {
   name        = "sg_ssh_restringido"
   description = "Grupo de seguridad restringido para lab"
